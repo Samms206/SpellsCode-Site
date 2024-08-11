@@ -22,6 +22,16 @@ $(document).ready(function () {
     }
   );
 
+  //hover btn primary
+  $("#btn-primary").hover(
+    function () {
+        $(this).find(".button-bg").css("background-color", "var(--green1)");
+    },
+    function () {
+        $(this).find(".button-bg").css("background-color", "var(--green1)");
+    }
+  );
+
   //hover logo code
   $(".item-slider2-side").hover(
     function () {
