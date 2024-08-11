@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html
-  data-wf-page="66a634dba276a7a44686f2b7"
-  data-wf-site="66a634dba276a7a44686f2b1"
->
+<html>
   <head>
     <meta charset="utf-8" />
     <title>SpellsCode</title>
@@ -10,8 +7,8 @@
     <link href="css/normalize.css" rel="stylesheet" type="text/css" />
     <link href="css/default.css" rel="stylesheet" type="text/css" />
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" href="/logo.svg" type="image/svg+xml">
-    
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+
     <style>
       .container-image-slider {
         --position: 50%;
@@ -79,6 +76,7 @@
         </div>
         <div class="wrappers btn-contact-sales">
           <a
+            id="btn_signup"
             data-w-id="a8673d3f-4bad-c533-8e2e-7cc1577c9d88"
             href="#"
             class="button btn-signup w-inline-block"
@@ -94,7 +92,7 @@
           </a>
         </div>
       </nav>
-      <div class="wrap-menu-mobile menu-mobiles">
+      <div id="menu_mobile" class="wrap-menu-mobile menu-mobiles">
         <a
           href="index.html"
           aria-current="page"
@@ -116,6 +114,7 @@
         </a>
         <div class="wrappers btn-contact-sales mobile">
           <a
+            id="btn_signup_mobile"
             data-ms-content="!members"
             data-w-id="0f76f322-d1c7-82dd-6299-6b3f57d80472"
             href="#"
@@ -142,6 +141,7 @@
             class="logo"
           />
           <div
+            id="burger"
             data-w-id="bcf73195-d047-5a99-c0b3-6849f7c5fc6d"
             class="wrapper-burger"
           >
@@ -186,6 +186,7 @@
                   data-w-id="c89162f5-27b9-6ba9-4b7d-6309bbe89d04"
                   href="#"
                   class="button w-inline-block"
+                  id="btn_contactsales"
                 >
                   <div class="button-bg"></div>
                   <div class="p-16 medium nowrap">Contact Sales</div>
@@ -1832,6 +1833,7 @@
               <div
                 data-w-id="b9b83805-ac9d-0ecf-91a4-5f661dde83cf"
                 class="item-slider item-slider3"
+                id="item_slider3"
               >
                 <div class="bg-item-slider">
                   <div class="item-slider-blur blur-rose"></div>
@@ -1974,9 +1976,10 @@
                       rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
                   "
                   alt=""
+                  id="img_back"
                   class="img-slider3 back"
                 />
-                <div class="img-slider3 bg">
+                <div class="img-slider3 bg" id="img_front">
                   <img
                     src="images/img-front.svg"
                     loading="lazy"
@@ -4699,8 +4702,128 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
-    <script src="js/script.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
     <script>
+      //lenis smooth scroll
+      const lenis = new Lenis();
+      lenis.on("scroll", (e) => {
+        console.log(e);
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      //end Lenis smooth scroll
+
+      //jQuery
+      $(document).ready(function () {
+        //burger click
+        $("#burger").click(function () {
+          const menu = $("#menu_mobile");
+          if (menu.css("display") === "none") {
+            menu.css("display", "flex");
+          } else {
+            menu.css("display", "none");
+          }
+        });
+
+        //hover button arrow
+        $(".button").hover(
+          function () {
+            $(this).find(".arrow").css("transform", "translateX(5px)");
+            $(this).find(".button-bg").css("background-color", "rgb(56,56,56)");
+          },
+          function () {
+            $(this).find(".arrow").css("transform", "translateX(0)");
+            $(this).find(".button-bg").css("background-color", "var(--gray2)");
+          }
+        );
+
+        //hover logo code
+        $(".item-slider2-side").hover(
+          function () {
+            $(this).css({
+              transform: "scale(1.1)",
+              "background-color": "rgba(255, 255, 255, 0.05)",
+            });
+            $(this).find(".icon-output").css({
+              filter: "grayscale(0%)",
+              opacity: "100%",
+            });
+          },
+          function () {
+            $(this).css({
+              transform: "scale(1)",
+              "background-color": "rgba(255, 255, 255, 0)",
+            });
+            $(this).find(".icon-output").css({
+              filter: "grayscale(100%)",
+              opacity: "40%",
+            });
+          }
+        );
+
+        //click accordion
+        $(".accordion").click(function () {
+          const answer = $(this).find(".answer");
+          const close = $(this).find(".x-faq");
+          const blur = $(this).find(".accor-blur1");
+
+          close.css("transition", "all ease-in 0.3s");
+
+          if (
+            answer.css("height") === "1px" ||
+            answer.css("height") === "0px"
+          ) {
+            answer.css({
+              height: answer.prop("scrollHeight") + "px",
+              transition: "height 0.3s ease",
+            });
+            close.css("transform", "rotate(45deg)");
+            blur.css("opacity", "1");
+          } else {
+            answer.css({
+              height: "0px",
+              transition: "height 0.3s ease",
+            });
+            close.css("transform", "rotate(0deg)");
+            blur.css("opacity", "0");
+          }
+        });
+
+        //move blur accrodion
+        $(".accordion").mousemove(function (e) {
+          const containerOffset = $(this).offset();
+          const containerWidth = $(this).width();
+          const mouseX = e.pageX - containerOffset.left;
+
+          // Membatasi gerakan hanya di dalam container
+          if (mouseX >= 0 && mouseX <= containerWidth) {
+            $(this)
+              .find(".accor-blur1")
+              .css("left", mouseX + "px");
+          }
+        });
+
+        //
+      });
+      //end jQuery
+
+      //item slider3 hover
+      $("#item_slider3").hover(
+        function () {
+          $(this).find("#img_front").css("transform", "scale(1.14)");
+          $(this).find("#img_back").css("transform", "scale(1)");
+        },
+        function () {
+          $(this).find("#img_front").css("transform", "scale(1)");
+          $(this).find("#img_back").css("transform", "scale(1.14)");
+        }
+      );
+
+      //image slider hover
       const container = document.querySelector(".container-image-slider");
       const slider = document.querySelector(".slider");
       container.addEventListener("mousemove", (e) => {
